@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Josh Kastellano Graphics | Mbarara, Uganda</title>
+    <meta name="description" content="Premium graphics design, 3D animation, and web development solutions for SMEs.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        studio: {
+                            bg: '#0a0a0c',       // Deep space background
+                            card: '#121216',     // Slightly lighter for cards
+                            text: '#FDFBF7',     // Crisp white text
+                            cyan: '#06b6d4',     // Logo Cyan
+                            purple: '#8B5CF6',   // Logo Purple
+                        }
+                    },
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0a0a0c; color: #FDFBF7; }
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30,30,35,0.8) 0%, rgba(15,15,20,0.9) 100%);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+        .delay-100 { animation-delay: 0.1s; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col selection:bg-studio-purple selection:text-white overflow-x-hidden">
+
+    <div class="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+        <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-studio-cyan/10 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-studio-purple/10 rounded-full blur-[120px]"></div>
+    </div>
+
+    <main class="flex-1 pt-12 pb-32 px-4 md:px-8 max-w-7xl mx-auto w-full">
+        
+        <section class="fade-up mb-16">
+            <div class="relative rounded-3xl overflow-hidden glass-card min-h-[450px] flex flex-col md:flex-row items-center border border-studio-purple/20 shadow-2xl shadow-studio-cyan/5">
+                
+                <div class="p-8 md:p-12 md:w-1/2 z-20 flex flex-col items-start justify-center h-full pointer-events-none">
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-studio-cyan/10 text-studio-cyan text-[10px] font-bold tracking-wider mb-4 border border-studio-cyan/20">
+                        <span class="w-1.5 h-1.5 rounded-full bg-studio-cyan animate-pulse"></span>
+                        MBARARA, UGANDA
+                    </span>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.1] mb-4">
+                        Josh Kastellano <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-studio-cyan to-studio-purple">Graphics</span>
+                    </h1>
+                    <p class="text-studio-text/70 text-sm md:text-base mb-8 max-w-md leading-relaxed font-medium">
+                        Elevating brands through dynamic motion advertisements, stunning 3D web graphics, and custom digital solutions for SMEs.
+                    </p>
+                    <div class="flex gap-4 pointer-events-auto">
+                        <button onclick="document.getElementById('services-grid').scrollIntoView({behavior: 'smooth'})" class="bg-gradient-to-r from-studio-cyan to-studio-purple text-white px-8 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform shadow-[0_0_20px_rgba(139,92,246,0.3)]">
+                            Explore Services
+                        </button>
+                    </div>
+                </div>
+
+                <div id="canvas-container" class="absolute inset-0 md:relative md:w-1/2 w-full h-[300px] md:h-full z-10"></div>
+            </div>
+        </section>
+
+        <section id="services-grid" class="fade-up delay-100 relative z-20">
+            <div class="mb-8">
+                <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight">Creative <span class="text-studio-cyan">Solutions</span></h2>
+                <p class="text-studio-purple font-bold text-xs md:text-sm mt-1.5 uppercase tracking-wider">Select a service to start your project</p>
+            </div>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" id="products-container">
+                </div>
+        </section>
+
+    </main>
+
+    <div id="product-modal" class="fixed inset-0 z-50 hidden flex items-end md:items-center justify-center sm:p-4" aria-modal="true">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0" id="modal-backdrop" onclick="closeModal()"></div>
+        
+        <div class="relative w-full md:w-[850px] max-h-[92vh] md:h-auto bg-studio-card rounded-t-3xl md:rounded-3xl shadow-[0_-10px_40px_rgba(6,182,212,0.2)] transform transition-transform duration-300 translate-y-full md:translate-y-10 scale-95 opacity-0 flex flex-col md:flex-row overflow-hidden border border-studio-purple/20" id="modal-panel">
+            
+            <div class="relative w-full md:w-1/2 h-56 md:h-auto min-h-[220px] bg-black flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-white/5 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-studio-cyan/20 to-studio-purple/20 blur-xl opacity-50"></div>
+                <div id="modal-icon-container" class="relative z-10 text-6xl text-white drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                    <i id="modal-icon" class="fa-solid fa-laptop-code"></i>
+                </div>
+                <button onclick="closeModal()" class="absolute top-4 right-4 md:hidden z-20 bg-white/10 hover:bg-white/20 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md border border-white/10 transition-colors">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+            
+            <div class="w-full md:w-1/2 p-5 md:p-8 flex flex-col overflow-y-auto no-scrollbar">
+                <div class="flex justify-between items-start mb-3">
+                    <span id="modal-tag" class="text-[10px] font-bold tracking-widest bg-studio-purple/20 border border-studio-purple/50 text-studio-purple px-2.5 py-1 rounded shadow-sm">CATEGORY</span>
+                    <button onclick="closeModal()" class="hidden md:flex text-white/40 hover:text-white transition-colors hover:rotate-90 duration-300">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                
+                <h2 id="modal-title" class="text-2xl md:text-3xl font-extrabold mb-1 leading-tight text-white">Service Title</h2>
+                <p id="modal-tagline" class="text-studio-cyan text-sm mb-5 font-bold opacity-90">Tagline here</p>
+                
+                <div class="grid grid-cols-3 gap-2 md:gap-3 mb-6">
+                    <div class="glass-card rounded-xl p-3 text-center">
+                        <i class="fa-solid fa-bolt text-studio-cyan mb-1.5 text-sm md:text-base"></i>
+                        <p id="stat-1" class="text-[9px] md:text-[10px] font-bold uppercase tracking-wide text-white/70">Stat 1</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-3 text-center">
+                        <i class="fa-solid fa-layer-group text-studio-purple mb-1.5 text-sm md:text-base"></i>
+                        <p id="stat-2" class="text-[9px] md:text-[10px] font-bold uppercase tracking-wide text-white/70">Stat 2</p>
+                    </div>
+                    <div class="glass-card rounded-xl p-3 text-center">
+                        <i class="fa-solid fa-check-double text-white mb-1.5 text-sm md:text-base"></i>
+                        <p id="stat-3" class="text-[9px] md:text-[10px] font-bold uppercase tracking-wide text-white/70">Stat 3</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4 mb-6 text-sm text-white/80 font-medium leading-relaxed flex-1">
+                    <div>
+                        <h3 class="text-studio-cyan font-extrabold mb-1 text-xs uppercase tracking-wider">Project Scope</h3>
+                        <p id="modal-desc" class="text-xs">Description text...</p>
+                    </div>
+                    <div>
+                        <h3 class="text-studio-purple font-extrabold mb-1 text-xs uppercase tracking-wider">Deliverables</h3>
+                        <p id="modal-deliverables" class="text-xs text-white/90 glass-card p-3 rounded-lg">List...</p>
+                    </div>
+                </div>
+                
+                <div class="mt-auto pt-4 border-t border-white/10">
+                    <p class="text-center text-[10px] font-bold text-white/50 uppercase tracking-widest mb-3">Connect to Order</p>
+                    <div class="grid grid-cols-4 gap-2">
+                        <a href="https://wa.me/256789462495" class="bg-[#25D366]/20 hover:bg-[#25D366] text-[#25D366] hover:text-white border border-[#25D366]/30 rounded-xl py-2.5 flex items-center justify-center transition-all group">
+                            <i class="fa-brands fa-whatsapp text-lg group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="mailto:jojotaresh@gmail.com" class="bg-studio-cyan/20 hover:bg-studio-cyan text-studio-cyan hover:text-white border border-studio-cyan/30 rounded-xl py-2.5 flex items-center justify-center transition-all group">
+                            <i class="fa-solid fa-envelope text-lg group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="tel:+256789462495" class="bg-studio-purple/20 hover:bg-studio-purple text-studio-purple hover:text-white border border-studio-purple/30 rounded-xl py-2.5 flex items-center justify-center transition-all group">
+                            <i class="fa-solid fa-phone text-lg group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://instagram.com/josh_kastellano90" target="_blank" class="bg-[#E1306C]/20 hover:bg-[#E1306C] text-[#E1306C] hover:text-white border border-[#E1306C]/30 rounded-xl py-2.5 flex items-center justify-center transition-all group">
+                            <i class="fa-brands fa-instagram text-lg group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Service Data Array (6 Custom Categories)
+        const products = [
+            {
+                title: "Motion Ads & Flyers",
+                tagline: "Captivating animations for modern brands",
+                tag: "ANIMATION",
+                icon: "fa-film",
+                stats: ["High Conversion", "Custom Assets", "Social Ready"],
+                desc: "We bring your promotions to life. Perfect for small businesses looking to grab attention on social media with dynamic, high-quality animated flyers and motion advertisements.",
+                deliverables: "15-30s Motion Video, Animated Text, Custom Transitions, Story/Reel Formats."
+            },
+            {
+                title: "3D Web Graphics",
+                tagline: "Interactive rendering & immersive experiences",
+                tag: "WEBGL",
+                icon: "fa-cube",
+                stats: ["Three.js", "Optimized", "Interactive"],
+                desc: "Stand out with cutting-edge 3D web elements. We design and integrate interactive 3D models and scripted scenes directly into your website to engage users immediately.",
+                deliverables: "Custom 3D Models, Texture Mapping, Canvas Integration, Animation Loops."
+            },
+            {
+                title: "E-Commerce Systems",
+                tagline: "Dynamic shops that drive sales",
+                tag: "DEVELOPMENT",
+                icon: "fa-cart-shopping",
+                stats: ["Responsive", "Secure Checkout", "Inventory"],
+                desc: "Robust online retail platforms built for growth. From stunning product galleries and dynamic shopping carts to automated total calculations and seamless checkouts.",
+                deliverables: "Product Galleries, Cart Logic, Payment Integration, Mobile Optimization."
+            },
+            {
+                title: "Print & Layout Design",
+                tagline: "Physical media formatted to perfection",
+                tag: "PUBLISHING",
+                icon: "fa-book-open",
+                stats: ["Print-Ready", "Typography", "Custom Frames"],
+                desc: "Expert typesetting and layout formatting for physical print books, magazines, and corporate documents. We ensure every page, margin, and letterhead looks incredibly professional.",
+                deliverables: "Manuscript Formatting, Custom Page Frames, Cover Design, Print PDF Generation."
+            },
+            {
+                title: "Corporate Web Solutions",
+                tagline: "Professional sites for growing SMEs",
+                tag: "FRONT-END",
+                icon: "fa-laptop-code",
+                stats: ["Fast Loading", "Modern UI", "SEO Friendly"],
+                desc: "Bespoke front-end web development for service-based businesses. We build the digital face of your company to attract clients and establish authority in your industry.",
+                deliverables: "Landing Pages, Service Portfolios, Contact Forms, UI/UX Design."
+            },
+            {
+                title: "Multilingual Platforms",
+                tagline: "Break language barriers online",
+                tag: "GLOBAL",
+                icon: "fa-language",
+                stats: ["English", "Swahili", "Arabic"],
+                desc: "Reach a wider audience with seamless language integration. We develop platforms that cater to multiple demographics, ensuring your message translates perfectly across cultures.",
+                deliverables: "Language Toggles, Localized Content Structures, Custom Themed Icons."
+            }
+        ];
+
+        // 2. Render Cards Dynamically
+        const container = document.getElementById('products-container');
+        products.forEach((p, index) => {
+            const card = document.createElement('article');
+            card.onclick = () => openProduct(index);
+            card.className = "group glass-card rounded-2xl p-4 cursor-pointer relative hover:-translate-y-2 transition-transform duration-300";
+            card.innerHTML = `
+                <div class="absolute top-4 left-4 z-10 bg-studio-cyan/20 border border-studio-cyan/30 text-studio-cyan text-[9px] font-bold px-2 py-1 rounded-md">
+                    ${p.tag}
+                </div>
+                <div class="aspect-square bg-black rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-white/5 group-hover:border-studio-purple/50 transition-colors">
+                    <i class="fa-solid ${p.icon} text-4xl text-white/50 group-hover:text-studio-cyan transition-colors duration-500 group-hover:scale-110"></i>
+                    <button class="absolute bottom-3 right-3 w-8 h-8 bg-studio-purple rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(139,92,246,0.5)] opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+                <h3 class="font-bold text-sm md:text-base truncate text-white">${p.title}</h3>
+                <p class="text-xs text-white/50 font-medium">${p.stats[0]} • ${p.stats[1]}</p>
+            `;
+            container.appendChild(card);
+        });
+
+        // 3. Modal Logic
+        const modal = document.getElementById('product-modal');
+        const backdrop = document.getElementById('modal-backdrop');
+        const panel = document.getElementById('modal-panel');
+
+        function openProduct(index) {
+            const p = products[index];
+            document.getElementById('modal-title').innerText = p.title;
+            document.getElementById('modal-tagline').innerText = p.tagline;
+            document.getElementById('modal-tag').innerText = p.tag;
+            document.getElementById('modal-icon').className = `fa-solid ${p.icon}`;
+            document.getElementById('modal-desc').innerText = p.desc;
+            document.getElementById('modal-deliverables').innerText = p.deliverables;
+            document.getElementById('stat-1').innerText = p.stats[0];
+            document.getElementById('stat-2').innerText = p.stats[1];
+            document.getElementById('stat-3').innerText = p.stats[2];
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                panel.classList.remove('translate-y-full', 'scale-95', 'opacity-0', 'md:translate-y-10');
+            }, 10);
+        }
+
+        function closeModal() {
+            backdrop.classList.add('opacity-0');
+            panel.classList.add('translate-y-full', 'scale-95', 'opacity-0', 'md:translate-y-10');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        // 4. Three.js Cybernetic Globe Setup
+        const canvasContainer = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, canvasContainer.clientWidth / canvasContainer.clientHeight, 0.1, 1000);
+        camera.position.z = 4.5;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        canvasContainer.appendChild(renderer.domElement);
+
+        const globeGroup = new THREE.Group();
+        scene.add(globeGroup);
+
+        const geometry = new THREE.IcosahedronGeometry(2, 2); 
+        
+        // Cyan wireframe
+        const wireframeMaterial = new THREE.LineBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.3 });
+        const lines = new THREE.LineSegments(new THREE.WireframeGeometry(geometry), wireframeMaterial);
+        globeGroup.add(lines);
+
+        // Purple nodes
+        const pointsMaterial = new THREE.PointsMaterial({ color: 0x8B5CF6, size: 0.08, transparent: true, opacity: 0.9 });
+        const nodes = new THREE.Points(geometry, pointsMaterial);
+        globeGroup.add(nodes);
+
+        let mouseX = 0, mouseY = 0;
+        const targetRotation = { x: 0, y: 0 };
+
+        function animate() {
+            requestAnimationFrame(animate);
+            globeGroup.rotation.y += 0.002;
+            globeGroup.rotation.x += 0.001;
+            
+            targetRotation.y = mouseX * 0.5;
+            targetRotation.x = mouseY * 0.5;
+            
+            globeGroup.rotation.y += (targetRotation.y - globeGroup.rotation.y) * 0.05;
+            globeGroup.rotation.x += (targetRotation.x - globeGroup.rotation.x) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+        });
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+    </script>
+</body>
+</html>
