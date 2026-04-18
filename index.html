@@ -288,6 +288,8 @@
         const globeGroup = new THREE.Group();
         scene.add(globeGroup);
 
+        // ... (Keep the scene, camera, renderer, and globeGroup setup above this) ...
+
         const geometry = new THREE.IcosahedronGeometry(2, 2); 
         
         // Cyan wireframe
@@ -300,34 +302,28 @@
         const nodes = new THREE.Points(geometry, pointsMaterial);
         globeGroup.add(nodes);
 
-        let mouseX = 0, mouseY = 0;
-        const targetRotation = { x: 0, y: 0 };
-
+        // --- NEW ANIMATION LOOP: Constant Free-Spin ---
         function animate() {
             requestAnimationFrame(animate);
-            globeGroup.rotation.y += 0.002;
-            globeGroup.rotation.x += 0.001;
             
-            targetRotation.y = mouseX * 0.5;
-            targetRotation.x = mouseY * 0.5;
+            // Tweak these numbers to make it spin faster or slower
+            globeGroup.rotation.y += 0.005; // Horizontal spin
+            globeGroup.rotation.x += 0.002; // Vertical tumble
+            globeGroup.rotation.z += 0.001; // Slight tilt spin
             
-            globeGroup.rotation.y += (targetRotation.y - globeGroup.rotation.y) * 0.05;
-            globeGroup.rotation.x += (targetRotation.x - globeGroup.rotation.x) * 0.05;
-
             renderer.render(scene, camera);
         }
         animate();
 
+        // Keep the responsive window resize handler
         window.addEventListener('resize', () => {
             camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
         });
 
-        document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-        });
+        // Note: You can completely delete the document.addEventListener('mousemove', ...) 
+        // and 'touchmove' blocks from the previous code!
     </script>
 </body>
 </html>
