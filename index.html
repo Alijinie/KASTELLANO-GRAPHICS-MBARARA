@@ -164,8 +164,8 @@
             
             <div class="relative w-full md:w-1/2 h-56 md:h-auto min-h-[220px] bg-black flex items-center justify-center p-6 border-b md:border-b-0 md:border-r border-white/5 overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-studio-cyan/20 to-studio-purple/20 blur-xl opacity-50"></div>
-                <div id="modal-icon-container" class="relative z-10 text-6xl text-white drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]">
-                    <i id="modal-icon" class="fa-solid fa-laptop-code"></i>
+                <div id="modal-icon-container" class="relative z-10 drop-shadow-[0_0_15px_rgba(6,182,212,0.5)]">
+                    <img id="modal-icon" src="" alt="Service Display" class="w-full h-full object-contain">
                 </div>
                 <button onclick="closeModal()" class="absolute top-4 right-4 md:hidden z-20 bg-white/10 hover:bg-white/20 text-white w-8 h-8 rounded-full flex items-center justify-center backdrop-blur-md border border-white/10 transition-colors">
                     <i class="fa-solid fa-xmark text-sm"></i>
@@ -237,7 +237,7 @@
                 title: "Motion Ads & Flyers",
                 tagline: "Captivating animations for modern brands",
                 tag: "ANIMATION",
-                icon: "fa-film",
+                icon: "2.gif",
                 stats: ["High Conversion", "Custom Assets", "Social Ready"],
                 desc: "We bring your promotions to life. Perfect for small businesses looking to grab attention on social media with dynamic, high-quality animated flyers and motion advertisements.",
                 deliverables: "15-30s Motion Video, Animated Text, Custom Transitions, Story/Reel Formats."
@@ -246,7 +246,7 @@
                 title: "3D Web Graphics",
                 tagline: "Interactive rendering & immersive experiences",
                 tag: "WEBGL",
-                icon: "fa-cube",
+                icon: "8.gif",
                 stats: ["Three.js", "Optimized", "Interactive"],
                 desc: "Stand out with cutting-edge 3D web elements. We design and integrate interactive 3D models and scripted scenes directly into your website to engage users immediately.",
                 deliverables: "Custom 3D Models, Texture Mapping, Canvas Integration, Animation Loops."
@@ -255,7 +255,7 @@
                 title: "E-Commerce Systems",
                 tagline: "Dynamic shops that drive sales",
                 tag: "DEVELOPMENT",
-                icon: "fa-cart-shopping",
+                icon: "7.gif",
                 stats: ["Responsive", "Secure Checkout", "Inventory"],
                 desc: "Robust online retail platforms built for growth. From stunning product galleries and dynamic shopping carts to automated total calculations and seamless checkouts.",
                 deliverables: "Product Galleries, Cart Logic, Payment Integration, Mobile Optimization."
@@ -264,7 +264,7 @@
                 title: "Print & Layout Design",
                 tagline: "Physical media formatted to perfection",
                 tag: "PUBLISHING",
-                icon: "fa-book-open",
+                icon: "9.jpg",
                 stats: ["Print-Ready", "Typography", "Custom Frames"],
                 desc: "Expert typesetting and layout formatting for physical print books, magazines, and corporate documents. We ensure every page, margin, and letterhead looks incredibly professional.",
                 deliverables: "Manuscript Formatting, Custom Page Frames, Cover Design, Print PDF Generation."
@@ -273,7 +273,7 @@
                 title: "Corporate Web Solutions",
                 tagline: "Professional sites for growing SMEs",
                 tag: "FRONT-END",
-                icon: "fa-laptop-code",
+                icon: "10.gif",
                 stats: ["Fast Loading", "Modern UI", "SEO Friendly"],
                 desc: "Bespoke front-end web development for service-based businesses. We build the digital face of your company to attract clients and establish authority in your industry.",
                 deliverables: "Landing Pages, Service Portfolios, Contact Forms, UI/UX Design."
@@ -282,7 +282,7 @@
                 title: "Multilingual Platforms",
                 tagline: "Break language barriers online",
                 tag: "GLOBAL",
-                icon: "fa-language",
+                icon: "11.gif",
                 stats: ["English", "Swahili", "Arabic"],
                 desc: "Reach a wider audience with seamless language integration. We develop platforms that cater to multiple demographics, ensuring your message translates perfectly across cultures.",
                 deliverables: "Language Toggles, Localized Content Structures, Custom Themed Icons."
@@ -290,50 +290,54 @@
         ];
 
         // 2. Render Cards Dynamically
-        const container = document.getElementById('products-container');
-        products.forEach((p, index) => {
-            const card = document.createElement('article');
-            card.onclick = () => openProduct(index);
-            card.className = "group glass-card rounded-2xl p-4 cursor-pointer relative hover:-translate-y-2 transition-transform duration-300";
-            card.innerHTML = `
-                <div class="absolute top-4 left-4 z-10 bg-studio-cyan/20 border border-studio-cyan/30 text-studio-cyan text-[9px] font-bold px-2 py-1 rounded-md">
-                    ${p.tag}
-                </div>
-                <div class="aspect-square bg-black rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-white/5 group-hover:border-studio-purple/50 transition-colors">
-                    <i class="fa-solid ${p.icon} text-4xl text-white/50 group-hover:text-studio-cyan transition-colors duration-500 group-hover:scale-110"></i>
-                    <button class="absolute bottom-3 right-3 w-8 h-8 bg-studio-purple rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(139,92,246,0.5)] opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
-                <h3 class="font-bold text-sm md:text-base truncate text-white">${p.title}</h3>
-                <p class="text-xs text-white/50 font-medium">${p.stats[0]} • ${p.stats[1]}</p>
-            `;
-            container.appendChild(card);
-        });
+const container = document.getElementById('products-container');
+products.forEach((p, index) => {
+    const card = document.createElement('article');
+    card.onclick = () => openProduct(index);
+    card.className = "group glass-card rounded-2xl p-4 cursor-pointer relative hover:-translate-y-2 transition-transform duration-300";
+    card.innerHTML = `
+        <div class="absolute top-4 left-4 z-10 bg-studio-cyan/20 border border-studio-cyan/30 text-studio-cyan text-[9px] font-bold px-2 py-1 rounded-md">
+            ${p.tag}
+        </div>
+        <div class="aspect-square bg-black rounded-xl mb-4 overflow-hidden relative flex items-center justify-center border border-white/5 group-hover:border-studio-purple/50 transition-colors">
+            
+            <img src="${p.icon}" alt="${p.title}" class="w-full h-full object-contain opacity-50 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110">
+            
+            <button class="absolute bottom-3 right-3 w-8 h-8 bg-studio-purple rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(139,92,246,0.5)] opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+        <h3 class="font-bold text-sm md:text-base truncate text-white">${p.title}</h3>
+        <p class="text-xs text-white/50 font-medium">${p.stats[0]} • ${p.stats[1]}</p>
+    `;
+    container.appendChild(card);
+});
 
         // 3. Modal Logic
-        const modal = document.getElementById('product-modal');
-        const backdrop = document.getElementById('modal-backdrop');
-        const panel = document.getElementById('modal-panel');
+const modal = document.getElementById('product-modal');
+const backdrop = document.getElementById('modal-backdrop');
+const panel = document.getElementById('modal-panel');
+function openProduct(index) {
+    const p = products[index];
+    document.getElementById('modal-title').innerText = p.title;
+    document.getElementById('modal-tagline').innerText = p.tagline;
+    document.getElementById('modal-tag').innerText = p.tag;
+    
+    // CHANGE THIS LINE: Assign the src instead of className
+    document.getElementById('modal-icon').src = p.icon;
+    
+    document.getElementById('modal-desc').innerText = p.desc;
+    document.getElementById('modal-deliverables').innerText = p.deliverables;
+    document.getElementById('stat-1').innerText = p.stats[0];
+    document.getElementById('stat-2').innerText = p.stats[1];
+    document.getElementById('stat-3').innerText = p.stats[2];
 
-        function openProduct(index) {
-            const p = products[index];
-            document.getElementById('modal-title').innerText = p.title;
-            document.getElementById('modal-tagline').innerText = p.tagline;
-            document.getElementById('modal-tag').innerText = p.tag;
-            document.getElementById('modal-icon').className = `fa-solid ${p.icon}`;
-            document.getElementById('modal-desc').innerText = p.desc;
-            document.getElementById('modal-deliverables').innerText = p.deliverables;
-            document.getElementById('stat-1').innerText = p.stats[0];
-            document.getElementById('stat-2').innerText = p.stats[1];
-            document.getElementById('stat-3').innerText = p.stats[2];
-
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                backdrop.classList.remove('opacity-0');
-                panel.classList.remove('translate-y-full', 'scale-95', 'opacity-0', 'md:translate-y-10');
-            }, 10);
-        }
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+        backdrop.classList.remove('opacity-0');
+        panel.classList.remove('translate-y-full', 'scale-95', 'opacity-0', 'md:translate-y-10');
+    }, 10);
+}
 
         function closeModal() {
             backdrop.classList.add('opacity-0');
